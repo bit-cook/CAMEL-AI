@@ -40,7 +40,7 @@ from dotenv import load_dotenv
 load_dotenv()  # Load environment variables from .env.test file
 
 model_backend = ModelFactory.create(
-    model_platform=ModelPlatformType.AZURE,
+    model_platform=ModelPlatformType.OPENAI,
     model_type=ModelType.GPT_4_1,
     model_config_dict={"temperature": 0.0, "top_p": 1},
 )

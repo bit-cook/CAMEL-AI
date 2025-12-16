@@ -248,7 +248,7 @@ async def run_eigent_workforce(
 
     # Create a single model backend for all agents
     model_backend = ModelFactory.create(
-        model_platform=ModelPlatformType.AZURE,
+        model_platform=ModelPlatformType.OPENAI,
         model_type=ModelType.GPT_4_1,
         model_config_dict={
             "stream": False,
@@ -256,7 +256,7 @@ async def run_eigent_workforce(
     )
 
     model_backend_reason = ModelFactory.create(
-        model_platform=ModelPlatformType.AZURE,
+        model_platform=ModelPlatformType.OPENAI,
         model_type=ModelType.GPT_4_1,
         model_config_dict={
             "stream": False,
@@ -446,7 +446,7 @@ if __name__ == "__main__":
     parser.add_argument(
         '--jsonl',
         type=str,
-        default=r'/Users/puzhen/Downloads/WebVoyager_data (3).jsonl',
+        default=r'C:\Users\moizh\workspace\camel\data\webvoyager\WebVoyager_data.jsonl',
         help='Path to JSONL file',
     )
     args = parser.parse_args()
@@ -458,7 +458,7 @@ if __name__ == "__main__":
 
     # Create model backend for verification
     verifier_model = ModelFactory.create(
-        model_platform=ModelPlatformType.AZURE,
+        model_platform=ModelPlatformType.OPENAI,
         model_type=ModelType.GPT_4_1,
         model_config_dict={
             "stream": False,
