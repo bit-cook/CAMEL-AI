@@ -1,4 +1,4 @@
-# ========= Copyright 2023-2025 @ CAMEL-AI.org. All Rights Reserved. =========
+# ========= Copyright 2023-2026 @ CAMEL-AI.org. All Rights Reserved. =========
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -10,7 +10,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# ========= Copyright 2023-2025 @ CAMEL-AI.org. All Rights Reserved. =========
+# ========= Copyright 2023-2026 @ CAMEL-AI.org. All Rights Reserved. =========
 import copy
 import os
 import warnings
@@ -373,6 +373,10 @@ class AzureOpenAIModel(BaseModelBackend):
 
         if tools:
             request_config["tools"] = tools
+        else:
+            # Remove parallel_tool_calls if no tools are specified
+            # as OpenAI API only allows it when tools are present
+            request_config.pop("parallel_tool_calls", None)
 
         return self._client.chat.completions.create(
             messages=messages,
@@ -389,6 +393,10 @@ class AzureOpenAIModel(BaseModelBackend):
 
         if tools:
             request_config["tools"] = tools
+        else:
+            # Remove parallel_tool_calls if no tools are specified
+            # as OpenAI API only allows it when tools are present
+            request_config.pop("parallel_tool_calls", None)
 
         return await self._async_client.chat.completions.create(
             messages=messages,
@@ -410,6 +418,10 @@ class AzureOpenAIModel(BaseModelBackend):
         request_config.pop("stream", None)
         if tools is not None:
             request_config["tools"] = tools
+        else:
+            # Remove parallel_tool_calls if no tools are specified
+            # as OpenAI API only allows it when tools are present
+            request_config.pop("parallel_tool_calls", None)
 
         return self._client.beta.chat.completions.parse(
             messages=messages,
@@ -431,6 +443,10 @@ class AzureOpenAIModel(BaseModelBackend):
         request_config.pop("stream", None)
         if tools is not None:
             request_config["tools"] = tools
+        else:
+            # Remove parallel_tool_calls if no tools are specified
+            # as OpenAI API only allows it when tools are present
+            request_config.pop("parallel_tool_calls", None)
 
         return await self._async_client.beta.chat.completions.parse(
             messages=messages,
@@ -456,6 +472,10 @@ class AzureOpenAIModel(BaseModelBackend):
 
         if tools is not None:
             request_config["tools"] = tools
+        else:
+            # Remove parallel_tool_calls if no tools are specified
+            # as OpenAI API only allows it when tools are present
+            request_config.pop("parallel_tool_calls", None)
 
         # Use the beta streaming API for structured outputs
         return self._client.beta.chat.completions.stream(
@@ -483,6 +503,10 @@ class AzureOpenAIModel(BaseModelBackend):
 
         if tools is not None:
             request_config["tools"] = tools
+        else:
+            # Remove parallel_tool_calls if no tools are specified
+            # as OpenAI API only allows it when tools are present
+            request_config.pop("parallel_tool_calls", None)
 
         # Use the beta streaming API for structured outputs
         return self._async_client.beta.chat.completions.stream(

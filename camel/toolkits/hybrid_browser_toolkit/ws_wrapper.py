@@ -1,4 +1,4 @@
-# ========= Copyright 2023-2025 @ CAMEL-AI.org. All Rights Reserved. =========
+# ========= Copyright 2023-2026 @ CAMEL-AI.org. All Rights Reserved. =========
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -10,7 +10,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# ========= Copyright 2023-2025 @ CAMEL-AI.org. All Rights Reserved. =========
+# ========= Copyright 2023-2026 @ CAMEL-AI.org. All Rights Reserved. =========
 
 import asyncio
 import contextlib
@@ -579,6 +579,14 @@ class WebSocketBrowserWrapper:
                     if outputs.images
                     else 0,
                 }
+
+                # include snapshot in log
+                if action_name == 'get_som_screenshot' and hasattr(
+                    outputs, '_snapshot_for_logging'
+                ):
+                    log_entry["outputs"]["snapshot"] = (
+                        outputs._snapshot_for_logging
+                    )
             else:
                 log_entry["outputs"] = outputs
 
@@ -801,12 +809,13 @@ class WebSocketBrowserWrapper:
         end_time = time.time()
         logger.info(f"Screenshot completed in {end_time - start_time:.2f}s")
 
-        # Create ToolResult and preserve snapshot if available
+        # Create ToolResult without snapshot
+        # snapshot will be logged separately
         result = ToolResult(text=response['text'], images=response['images'])
 
-        # Attach snapshot as an attribute for logging purposes
+        # Store snapshot in result for logging, but it won't be passed to agent
         if 'snapshot' in response:
-            result.snapshot = response['snapshot']
+            result._snapshot_for_logging = response['snapshot']
 
         return result
 
